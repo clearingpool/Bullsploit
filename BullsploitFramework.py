@@ -375,7 +375,7 @@ Common options:
         except KeyboardInterrupt:
             choice = input(f"\nAre you sure you want to exit? (y/n)>").lower()
             if choice == "y": sys.exit()
-            else: mainmenu(self.payload, self.aux, self.post, self.builder)
+            else: self.run()
         except Exception as h:
             print(f"{err()} {h}")
             turn()

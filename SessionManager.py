@@ -31,13 +31,13 @@ class sessions:
             
     def getsession(self, sid: int) -> dict:
         with self.lock:
-            return self.session.get(sid)
+            return self.sessions.get(sid)
         
     def remove(self, sid: int) -> None:
         with self.lock:
             if sid in self.sessions:
                 try:
-                    self.session[sid]["conn"].close()
+                    self.sessions[sid]["conn"].close()
                 except:
                     pass
             del self.sessions[sid]
