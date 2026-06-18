@@ -25,7 +25,7 @@ class sessions:
             print(f"  {"-" * 32}")
             for sid, sdata in self.sessions.items():
                 ip, port = sdata["addr"]
-                print(f"  | {sid:<2}| {beautip(ip):<15}  | {port} |")
+                print(f"  | {sid:<2}| {beautip(ip):<17}  | {port} |")
             print(f"  {"-" * 32}")
             print()
             

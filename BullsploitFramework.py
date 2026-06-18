@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
+import signal
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 ver = 1.0
 from colorama import Fore, Style, Back
-from StrFuncs import err, evnt, timenow
+from StrFuncs import err, evnt, timenow, current
 import ast
 import time
 import threading
@@ -14,6 +15,7 @@ from importlib import util
 import subprocess
 from SessionManager import manager
 import json
+import atexit
 
 def turn() -> None:
     input("Press any key to continue...")
@@ -122,14 +124,15 @@ class BSC:
         self.aux = auxiliary
         self.builder = builder
         self.options = {}
-        self.selectmod = ""
         self.rank = {"Bad": Fore.RED, "Good": Fore.GREEN, "Normal": Fore.YELLOW, "Excellent": Fore.CYAN}
         self.folders = ["auxiliary", "payloads", "post", "builder"]
         self.rules = {}
         self.corrkey = []
         self.modules = []
         self.analyse()
+        self.clearmodule()
         self.run()
+
 
     def parse(self, args=None) -> dict:
         if not args: return {}
@@ -193,7 +196,7 @@ class BSC:
             os.system("cls")
         else:
             os.system("clear")
-        mainmenu(self.payload, self.aux, self.post, self.builder)
+        self.run()
 
     def table(self, modultype=None) -> None:
         try:
@@ -226,12 +229,12 @@ class BSC:
         except Exception as y:
             print(f"{err()} {y}")
         
-
+    
     def run(self) -> None:
         try:
             while True:
-                selectmod = f" {Fore.RED}({self.selectmod}){Style.RESET_ALL}" if self.selectmod else ""
-                rawcmd = input(f"\033[4mbsc\033[0m{selectmod}>").lower().strip().split()
+                
+                rawcmd = input(f"{current()}").lower().strip().split()
                 
                 if not rawcmd:
                     continue
@@ -293,12 +296,13 @@ Common options:
                             if module == mpath:
                                 found = True
                                 data = {"Module": module}
-                        
+                                with open("CurrentModule.json", "w", encoding="utf-8") as f:
+                                    json.dump(data, f, indent=4, ensure_ascii=False)
+                                self.selectmod = self.getmodule()
                         if not found: 
                             print(f"{err()} Not found module {module}")
                             return
-                        with open("CurrentModule.json", "w", encoding="utf-8") as f:
-                            json.dump()
+                        
                         scheme = self.selectmod
                         finallyscheme = "Modules." + scheme.replace("/", ".")
                         m = importlib.import_module(finallyscheme)
@@ -346,7 +350,6 @@ Common options:
                         result = os.path.join("Modules", mtype, mname + ".py")
                         try:
                                     sid = int(args[0])
-                                    print(result)
                                     spec = importlib.util.spec_from_file_location(mname, result)
                                     modul = importlib.util.module_from_spec(spec)
                                     spec.loader.exec_module(modul)
@@ -366,6 +369,7 @@ Common options:
                     case "back":
                         self.selectmod = ""
                         self.options = {}
+                        self.clearmodule()
 
                     case "check":
                         print(self.modules)
@@ -384,6 +388,17 @@ Common options:
         except Exception as h:
             print(f"{err()} {h}")
             turn()
+
+    def clearmodule(self) -> None:
+        with open("CurrentModule.json", "w", encoding="utf-8") as file:
+            json.dump({}, file)
+
+    def getmodule(self) -> str:
+        with open("CurrentModule.json", "r", encoding="utf-8") as file:
+            data = json.load(file)
+        return data.get("Module") if data else ""
+    
+
 
 if __name__ == "__main__":
     check()
