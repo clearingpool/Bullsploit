@@ -19,11 +19,10 @@ def depargs() -> dict:
     }
 
 #imports
-from StrFuncs import err, evnt, timenow, beautip
+from StrFuncs import err, evnt, timenow, beautip, current
 import socket, os, threading
 from colorama import Fore, Style
 from SessionManager import manager
-from BullsploitFramework import BSC
 
 #interact with session
 def interact(sid: int) -> None:
@@ -54,8 +53,6 @@ def interact(sid: int) -> None:
 #main function
 def main(ip: str, port: int) -> None:
     try:
-        obj = BSC.__new__(BSC)
-        selectmodule = f"\033[4mbsc\033[0m{obj.getmodule}>"
         s = socket.socket()
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind((ip, port))
@@ -67,6 +64,7 @@ def main(ip: str, port: int) -> None:
                     conn, addr = s.accept()
                     sid = manager.add(conn, addr)
                     print(f"\r\n{evnt()} {timenow()} New session [{sid}]")
+                    print(f"{current()}", end="", flush=True)
                 except Exception as h:
                     print(h)
         threading.Thread(target=loop, daemon=True).start()

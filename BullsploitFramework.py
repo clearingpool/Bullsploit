@@ -4,7 +4,7 @@ import signal
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-ver = 1.0
+ver = 1.1
 from colorama import Fore, Style, Back
 from StrFuncs import err, evnt, timenow, current
 import ast
@@ -15,7 +15,7 @@ from importlib import util
 import subprocess
 from SessionManager import manager
 import json
-import atexit
+import webbrowser
 
 def turn() -> None:
     input("Press any key to continue...")
@@ -251,7 +251,8 @@ Common options:
     help                           --View help
     search <moduletype>            --Search module
     usagr                          --View useragreement
-    github                         --Open a bullsploit link on GitHub
+    github                         --Open the bullsploit repository on github
+    site                           --Open the bullsploit site
     clear                          --Clear console
     use <module path>              --Use some module
     set <arguments>                --Add settings
@@ -342,23 +343,26 @@ Common options:
                         manager.show()
 
                     case "interact":
-                        if not args:
-                            print(f"{err()} Error no session select")
-                            return
-                        
-                        mtype, mname = self.selectmod.split("/")
-                        result = os.path.join("Modules", mtype, mname + ".py")
-                        try:
-                                    sid = int(args[0])
-                                    spec = importlib.util.spec_from_file_location(mname, result)
-                                    modul = importlib.util.module_from_spec(spec)
-                                    spec.loader.exec_module(modul)
-                                    modul.interact(sid)
-                        except Exception as h:
-                            print(h)
+                        if args:
+                            mtype, mname = self.selectmod.split("/")
+                            result = os.path.join("Modules", mtype, mname + ".py")
+                            try:
+                                        sid = int(args[0])
+                                        spec = importlib.util.spec_from_file_location(mname, result)
+                                        modul = importlib.util.module_from_spec(spec)
+                                        spec.loader.exec_module(modul)
+                                        modul.interact(sid)
+                            except Exception as h:
+                                print(err(), h)
+                        else:
+                            print(f"{err()} No session select")
 
 
-                        
+                    case "github":
+                        webbrowser.open("https://github.com/clearingpool/Bullsploit")
+
+                    case "site":
+                        webbrowser.open("https://bullsploit.ru")
 
                     case "show":
                         if self.selectmod is not None:

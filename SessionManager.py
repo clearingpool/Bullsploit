@@ -1,5 +1,6 @@
 from StrFuncs import timenow, err, evnt, beautip
 import threading
+from colorama import Fore, Style
 
 class sessions:
     def __init__(self) -> None:
@@ -25,7 +26,8 @@ class sessions:
             print(f"  {"-" * 32}")
             for sid, sdata in self.sessions.items():
                 ip, port = sdata["addr"]
-                print(f"  | {sid:<2}| {beautip(ip):<17}  | {port} |")
+                line = f"  | {sid:<2}| {ip:<15}  | {Fore.CYAN}{port}{Style.RESET_ALL} |"
+                print(line.replace(ip, beautip(ip)))
             print(f"  {"-" * 32}")
             print()
             
