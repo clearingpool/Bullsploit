@@ -23,6 +23,8 @@ from StrFuncs import err, evnt, timenow, beautip
 import socket, os, threading
 from colorama import Fore, Style
 from SessionManager import manager
+from BullsploitFramework import BSC
+obj = BSC.__new__(BSC)
 
 #interact with session
 def interact(sid: int) -> None:
@@ -30,7 +32,7 @@ def interact(sid: int) -> None:
     if not session:
         print(f"{err()} Manager has no session")
     conn, addr = session["conn"], session["addr"]
-    print(f"{evnt()} Connection established from {beautip(addr[1])}")
+    print(f"{evnt()} Connection established from {beautip(addr[0])}:{addr[1]}")
     while True:
         try:
             command = input(f"{Fore.RED}BullShell>{Style.RESET_ALL}").strip()
@@ -64,6 +66,7 @@ def main(ip: str, port: int) -> None:
                     conn, addr = s.accept()
                     sid = manager.add(conn, addr)
                     print(f"\r\n{evnt()} {timenow()} New session [{sid}]")
+                    obj.run()
                 except Exception as h:
                     print(h)
         threading.Thread(target=loop, daemon=True).start()

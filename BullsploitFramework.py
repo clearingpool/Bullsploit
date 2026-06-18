@@ -13,6 +13,7 @@ import importlib
 from importlib import util
 import subprocess
 from SessionManager import manager
+import json
 
 def turn() -> None:
     input("Press any key to continue...")
@@ -291,8 +292,13 @@ Common options:
                             mpath = f"{m["type"]}/{m["name"]}".lower()
                             if module == mpath:
                                 found = True
-                                self.selectmod = module
-                        if not found: print(f"{err()} Not found module {module}")
+                                data = {"Module": module}
+                        
+                        if not found: 
+                            print(f"{err()} Not found module {module}")
+                            return
+                        with open("CurrentModule.json", "w", encoding="utf-8") as f:
+                            json.dump()
                         scheme = self.selectmod
                         finallyscheme = "Modules." + scheme.replace("/", ".")
                         m = importlib.import_module(finallyscheme)
@@ -347,7 +353,6 @@ Common options:
                                     modul.interact(sid)
                         except Exception as h:
                             print(h)
-                            print("fasdasd")
 
 
                         
