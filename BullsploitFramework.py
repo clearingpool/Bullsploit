@@ -266,7 +266,7 @@ Common options:
                         self.table(args[0] if args else None)
 
                     case "run":
-                        if not self.selectmod:
+                        if not self.getmodule():
                             print(f"{err()} No module selected")
                         else:
                             mtype, mname = self.selectmod.split("/")
@@ -318,7 +318,7 @@ Common options:
                         if not args: 
                             print(f"{err()} Usage: set <args>")
                             continue
-                        if not self.selectmod: 
+                        if not self.getmodule(): 
                             print(f"{err()} No select module!")
                             return
                         
@@ -333,7 +333,7 @@ Common options:
                         self.options.update(newparams)
 
                     case "options":
-                        if self.selectmod != "":
+                        if self.getmodule():
                             print(f" {evnt()} These parameters are available for {self.selectmod}: \n")
                             print(f"  Parameter      Data type\n  {"-"*26}")
                             for key, value in self.rules.items():
@@ -366,13 +366,12 @@ Common options:
                         webbrowser.open("https://bullsploit.ru")
 
                     case "show":
-                        if self.selectmod is not None:
+                        if self.getmodule() is not None:
                             for key, value in self.options.items():
                                 print(f"{evnt()} {key.capitalize()} => {value}")
 
 
                     case "back":
-                        self.selectmod = ""
                         self.options = {}
                         self.clearmodule()
 
