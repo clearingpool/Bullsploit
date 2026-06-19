@@ -259,6 +259,8 @@ Common options:
     exit                           --Exit bullsploit
 
                     """)
+                    case "usagr":
+                        os.system("less useragreement.txt")
 
                     case "search":
                         self.table(args[0] if args else None)
