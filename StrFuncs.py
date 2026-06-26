@@ -25,7 +25,6 @@ def beautip(ip: str) -> str:
 def current() -> str:
     from BullsploitFramework import BSC
     obj = BSC.__new__(BSC)
-    
     selectmod = f" {Fore.RED}({obj.getmodule()}){Style.RESET_ALL}" if obj.getmodule() else ""
     curmodule = f"\033[4mbsc\033[0m{selectmod}>"
     return curmodule

@@ -63,7 +63,7 @@ def check() -> None:
                 errlog.append(f"Not found the {i} path")
         for root, dirs, files in os.walk("Modules"):
             for file in files:
-                if file.endswith(".py") and file != "__init__.py":
+                if file.endswith(".py") and file != "__init__.py" or file.endswith(".go"):
                     if f"{os.sep}payloads" in root:
                         counts["payloads"] += 1
                     if f"{os.sep}auxiliary" in root:
@@ -111,7 +111,7 @@ def mainmenu(payloadc: int, auxiliaryc: int, postc: int, builderc: int) -> None:
           (6___6)  {Fore.WHITE}{Back.RED}BullSploit{Style.RESET_ALL} {Fore.WHITE}{Back.RED}Framework{Style.RESET_ALL}{Fore.CYAN} dev{Fore.WHITE}#{Fore.CYAN}{ver} {Fore.RED}
            `---` {Style.RESET_ALL}"""))
     print(f"""
-+- --=[ {f"{Fore.YELLOW}https://github.com/clearingpool{Style.RESET_ALL}":<53} ]-
++- --=[ {f"{Fore.YELLOW}https://github.com/clearingpool/bullsploit{Style.RESET_ALL}":<53} ]-
 +- --=[ {f"{payloadc} payload - {auxiliaryc} auxiliary - {postc} post - {builderc} builders":<45}]-
 """)
     BSC(payloadc, auxiliaryc, postc, builderc)
@@ -160,6 +160,8 @@ class BSC:
                                 "date": self.getdate(modulepath),
                                 "rank": self.getrank(modulepath)
                                 })
+                        elif file.endswith(".go"):
+                            pass
                 else:
                     print(f"{err()} Folder {folder} was not found")
         except Exception as k:
@@ -363,7 +365,7 @@ Common options:
                         webbrowser.open("https://github.com/clearingpool/Bullsploit")
 
                     case "site":
-                        webbrowser.open("https://bullsploit.ru")
+                        webbrowser.open("https://bullsploit.ru/framework")
 
                     case "show":
                         if self.getmodule() is not None:

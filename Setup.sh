@@ -28,4 +28,4 @@ fi
 
 echo -e "${GREEN}[+] Installation complete.${NC}"
 echo -e "To start BullSploit, use:"
-echo -e "sudo ./BullsploitFramework.py"
+echo -e "./BullsploitFramework.py"

@@ -40,14 +40,12 @@ def main(ip: str, port: int, semaphore, services: dict) -> None:
             s.close()
         except Exception as er:
             print(f"{err()} {er}")
-        finally:
-            semaphore.release() 
+
         
 #launch func
 def launch(args: dict) -> None:
     try:
-        basepath = os.path.dirname(__file__)
-        servpath = os.path.join(basepath, "Services.json")
+        servpath = os.path.join(os.path.dirname(__file__), "Services.json")
         if not os.path.exists(servpath):
             print(f"{err()} Services data not found!")
             return
@@ -64,6 +62,7 @@ def launch(args: dict) -> None:
             startp, endp = map(int, portrange.split("-"))
         except:
             print(f"{err()} Invalid range format")
+            return
         print(f"{evnt()} Starting scan on {beautip(target)} at {Fore.GREEN}{timenow()}{Style.RESET_ALL}")
         sem = Semaphore(threadcount)
         threads = []
