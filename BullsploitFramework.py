@@ -15,6 +15,7 @@ import subprocess
 from SessionManager import manager
 import json
 import webbrowser
+import re
 
 def turn() -> None:
     input("Press any key to continue...")
@@ -151,42 +152,54 @@ class BSC:
                 path = os.path.join("Modules", folder)
                 if os.path.exists(path):
                     for file in os.listdir(path):
-                        if file.endswith(".py"):
                             modulepath = os.path.join(path, file)
                             self.modules.append({
-                                "name": file.replace(".py", ""),
+                                "name": file.replace(".py", "") if file.endswith(".py") else file.replace(".go", ""),
                                 "type": folder,
                                 "description": self.getdesc(modulepath),
                                 "date": self.getdate(modulepath),
                                 "rank": self.getrank(modulepath)
                                 })
-                        elif file.endswith(".go"):
-                            pass
                 else:
                     print(f"{err()} Folder {folder} was not found")
         except Exception as k:
             print(f"{err()} {k}")
 
-    def getmeta(self, path: str, meta: str) -> str:
+    def getmeta(self, path: str, meta: str):
         try:
-            with open(path, "r", encoding="utf-8") as f:
-                parsed = ast.parse(f.read())
-                for modul in parsed.body:
-                    if isinstance(modul, ast.FunctionDef) and modul.name == meta:
-                        for line in modul.body:
-                            if isinstance(line, ast.Return) and isinstance(line.value, ast.Constant):
-                                return line.value.value
-            return f"No {meta}"
+            if path.endswith(".py") or path.endswith(".pyw"):
+                with open(path, "r", encoding="utf-8") as f:
+                    parsed = ast.parse(f.read())
+                    for modul in parsed.body:
+                        if isinstance(modul, ast.FunctionDef) and modul.name == meta:
+                            for line in modul.body:
+                                if isinstance(line, ast.Return) and isinstance(line.value, ast.Constant):
+                                    return line.value.value
+                return f"No {meta}"
+            else:
+                if meta == "description":
+                    result = {}
+                    pattern = re.compile(r'"([^"]+)"\s*:\s*"([^"]+)"')
+                    
+                    with open(path, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            match = pattern.search(line)
+                            if match:
+                                key = match.group(1)
+                                value = match.group(2)
+                                result[key] = value
+
+                return result
         except Exception as c:
             return "Read error"
 
-    def getrank(self, path: str) -> str:
+    def getrank(self, path: str):
         return self.getmeta(path, "rank")
 
-    def getdate(self, path: str) -> str:
+    def getdate(self, path: str):
         return self.getmeta(path, "date")
 
-    def getdesc(self, path: str) -> str:
+    def getdesc(self, path: str):
         return self.getmeta(path, "description")
 
 

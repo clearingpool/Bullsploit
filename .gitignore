@@ -5,4 +5,5 @@ venv/
 output/
 my_env
 .vscode
+goscan
 

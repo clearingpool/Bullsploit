@@ -25,7 +25,9 @@ if [ -f "requirements.txt" ]; then
 else
     echo -e "${RED}[!] requirements.txt not found!${NC}"
 fi
-
+chmod +x hashchecker.sh
+chmod +x BullsploitFramework.py
+echo -e "${GREEN}[+] Successfully get all permessions${NC}"
 echo -e "${GREEN}[+] Installation complete.${NC}"
 echo -e "To start BullSploit, use:"
 echo -e "./BullsploitFramework.py"

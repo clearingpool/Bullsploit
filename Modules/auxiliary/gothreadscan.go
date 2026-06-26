@@ -11,6 +11,16 @@ import (
 	"time"
 )
 
+const description = "Go multithread port scanner"
+const rank = "Excellent"
+const date = "26.06.2026"
+
+var depargs = map[string]string{
+	"host":    "IPv4 addr",
+	"range":   "Ports range",
+	"threads": "Number of threads",
+}
+
 const (
 	colres  = "\033[0m"
 	colred  = "\033[31m"
