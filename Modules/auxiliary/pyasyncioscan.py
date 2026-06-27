@@ -37,8 +37,7 @@ async def main(host: str, ports: range, services: dict) -> None:
 async def portscan(host: str, port: int, result: list, services: dict) -> None:
     async with sem:
         try:
-            connect = asyncio.open_connection(host, port)
-            read, write = await asyncio.wait_for(connect, timeout=1.0)
+            read, write = await asyncio.wait_for(asyncio.open_connection(host, port), timeout=1.0)
             servicename = services.get(str(port), "UNKNOWN")
             print(f"{timenow()} Port{Fore.CYAN} {port} {Style.RESET_ALL}is opened on service{Fore.GREEN} {servicename}{Style.RESET_ALL}")
             result.append(port)
