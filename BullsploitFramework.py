@@ -328,8 +328,7 @@ Common options:
                         m = importlib.import_module(finallyscheme)
                         self.rules = m.depargs()
                         
-                        for key, value in self.rules.items():
-                            self.corrkey.append(str(key.lower()))
+                        self.corrkey = [key.lower() for key in self.rules]
 
 
                     case "set":
