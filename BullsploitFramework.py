@@ -42,7 +42,7 @@ def animation() -> None:
                     break
                 sys.stdout.write(f"\rInitializating Bullsploit{i}")
                 sys.stdout.flush()
-                time.sleep(0.5)
+                time.sleep(0.1)
         sys.stdout.write("\r                            ")
         sys.stdout.flush()
     finally:
@@ -63,8 +63,10 @@ def check() -> None:
             if not os.path.exists(path):
                 errlog.append(f"Not found the {i} path")
         for root, dirs, files in os.walk("Modules"):
+            if "__pycache__" in dirs:
+                dirs.remove("__pycache__")
             for file in files:
-                if file.endswith(".py") and file != "__init__.py" or file.endswith(".go"):
+                if file != "__pycache__":
                     if f"{os.sep}payloads" in root:
                         counts["payloads"] += 1
                     if f"{os.sep}auxiliary" in root:
@@ -76,10 +78,10 @@ def check() -> None:
                     modul = os.path.join(root, file)
                     modulename = file[:-3]
                     try:
-
-                        with open(modul, "r", encoding="utf-8") as fail:
-                           code = fail.read()
-                           ast.parse(code)
+                        if file.endswith(".py"):
+                            with open(modul, "r", encoding="utf-8") as fail:
+                                code = fail.read()
+                                ast.parse(code)
                     except Exception as f:
                         errlog.append(f"Error in file {file} in {root}")
 
@@ -152,6 +154,7 @@ class BSC:
                 path = os.path.join("Modules", folder)
                 if os.path.exists(path):
                     for file in os.listdir(path):
+                        if file.endswith("go") or file.endswith("py"):
                             modulepath = os.path.join(path, file)
                             self.modules.append({
                                 "name": file.replace(".py", "") if file.endswith(".py") else file.replace(".go", ""),
@@ -177,19 +180,19 @@ class BSC:
                                     return line.value.value
                 return f"No {meta}"
             else:
-                if meta == "description":
-                    result = {}
-                    pattern = re.compile(r'"([^"]+)"\s*:\s*"([^"]+)"')
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        content = f.read()
+                    pattern = rf'const\s+{meta}\s*=\s*["`\(]([^"`\)]+)["`\)]'
+                    match = re.search(pattern, content)
                     
-                    with open(path, 'r', encoding='utf-8') as f:
-                        for line in f:
-                            match = pattern.search(line)
-                            if match:
-                                key = match.group(1)
-                                value = match.group(2)
-                                result[key] = value
-
-                return result
+                    if match:
+                        return match.group(1)
+                    return None
+                    
+                except FileNotFoundError:
+                    print(f"{err()} Error: File {path} not found.")
+                    return None
         except Exception as c:
             return "Read error"
 
