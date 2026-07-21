@@ -1,0 +1,21 @@
+name: Appsec code review
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  semgrep:
+    name: sast
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: run semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          auditOnInvalidYaml: true
+          config: auto
