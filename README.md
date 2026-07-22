@@ -28,7 +28,9 @@ The framework is built upon a modular micro-kernel design, prioritizing scalabil
 
 •  Unified Argument Parser: A specialized parameter management system providing strict type validation for user-defined inputs.
 
-•  
+•  Utilizing the Go language for high-performance networking tasks and efficient system resource consumption.
+
+• Utilizing automatic SAST checks for the entire framework at the GitHub Actions workflow level using Semgrep and Bandit, combined with testing via Pytest before pushing to production.
 
 
 ### 📂 Module Classification
