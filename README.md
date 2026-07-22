@@ -13,7 +13,7 @@
 
 
 
-BullSploit is a modular, high-performance penetration testing ecosystem designed for automated network reconnaissance and security research. The framework provides a robust environment for developing, managing, and executing security-centric modules.
+BullSploit is a modular, high-performance penetration testing framework designed for automated network reconnaissance and security research. The framework provides a robust environment for developing, managing, and executing security-centric modules. More detailed information about the framework can be found on the website https://bullsploit.ru/framework
 
 ### 🏗 Technical Architecture
 
@@ -34,7 +34,7 @@ Functional units are categorized into three distinct domains:
 
 The framework requires an isolated Python environment. An automated deployment script is provided for Linux-based systems.
 
- Automated Setup
+## Automated Setup
 ### Clone the repository
 ```
 git clone https://github.com/clearingpool/BullSploit.git
