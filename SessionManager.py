@@ -8,7 +8,7 @@ class sessions:
         self.lock = threading.Lock()
         self.currentId = 1
 
-    def add(self, conn: socket.socket, addr: tuple[str, int]) -> int:
+    def add(self, conn, addr: tuple[str, int]) -> int:
         with self.lock:
             sid = self.currentId
             self.sessions[sid] = {"conn": conn, "addr": addr}
