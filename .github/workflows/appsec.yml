@@ -1,21 +1,76 @@
-name: Appsec code review
+name: CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main", "master" ]
+
+
 
 jobs:
-  semgrep:
-    name: sast
+  code-quality:
+    name: Lint & syntax check
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: run semgrep
-        uses: returntocorp/semgrep-action@v1
+      - name: Setup python environment
+        uses: actions/setup-python@v5
         with:
-          auditOnInvalidYaml: true
-          config: auto
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install flake8 pytest
+
+
+      - name: Lint core engine
+        run: |
+          flake8 ./*.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 ./Modules --count --exit-zero --max-line-length=127 --statistics
+
+
+  dynamic-testing:
+    name: Core engine & threading tests
+    needs: code-quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+
+      - name: Run pytest
+        run: |
+          if [ -d tests ]; then pytest -v; else echo "No tests found. Skipping."; fi
+
+  security-devsecops:
+    name: SAST
+    needs: code-quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Bandit
+        run: |
+          pip install bandit
+          bandit -r . -x ./tests -ll -ii
+
+      - name: Run semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/python p/owasp-top-10 p/r2c-security-audit
