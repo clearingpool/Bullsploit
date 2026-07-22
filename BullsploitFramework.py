@@ -322,13 +322,13 @@ Common options:
                         if not found: 
                             print(f"{err()} Not found module {module}")
                             return
-                        if module.endswith(".py"):
+                        if module:
                             scheme = self.selectmod
                             finallyscheme = "Modules." + scheme.replace("/", ".")
                             m = importlib.import_module(finallyscheme)
                             self.rules = m.depargs()
-                        else:
-                            self.corrkey = [key.lower() for key in self.rules]
+
+                        self.corrkey = [key.lower() for key in self.rules]
 
 
                     case "set":
