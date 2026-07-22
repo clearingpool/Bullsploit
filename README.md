@@ -4,6 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.13-blue" />
+  <img src="https://img.shields.io/badge/go-lang-blue" />
   <img src="https://img.shields.io/badge/Bullsploit-Framework-red" />
   <img src="https://img.shields.io/badge/Ast-Parse-yellow" />
 </p>
@@ -26,6 +27,9 @@ The framework is built upon a modular micro-kernel design, prioritizing scalabil
 •  Concurrency Engine: Optimized for I/O-bound tasks using the threading library, supporting high-concurrency network operations (3000+ threads).
 
 •  Unified Argument Parser: A specialized parameter management system providing strict type validation for user-defined inputs.
+
+•  
+
 
 ### 📂 Module Classification
 
