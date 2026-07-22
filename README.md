@@ -4,8 +4,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.13-blue" />
-  <img src="https://img.shields.io/badge/go-lang-blue" />
   <img src="https://img.shields.io/badge/Bullsploit-Framework-red" />
+  <img src="https://img.shields.io/badge/Go-Lang-blue" />
   <img src="https://img.shields.io/badge/Ast-Parse-yellow" />
 </p>
 
