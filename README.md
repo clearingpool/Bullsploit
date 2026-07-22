@@ -30,17 +30,21 @@ The framework is built upon a modular micro-kernel design, prioritizing scalabil
 ### 📂 Module Classification
 
 Functional units are categorized into four distinct domains:
-### Payloads
-Payload for initial machine compromise and system persistence.
 
-### Post
-Post-exploitation payload for various types of interaction on the machine after its initial compromise.
+### Payloads:
+ Payload for initial machine compromise and system persistence.
 
-### Auxiliary
-Auxiliary modules of various types, such as reconnaissance tools, scanners, search engines, and others
+ 
+### Post:
+ Post-exploitation payload for various types of interaction on the machine after its initial compromise.
 
-### builder
-Module builders (specifically payload builders) that assemble/compile modules to make them ready for deployment
+
+### Auxiliary:
+ Auxiliary modules of various types, such as reconnaissance tools, scanners, search engines, and others
+
+
+### builder:
+ Module builders (specifically payload builders) that assemble/compile modules to make them ready for deployment
 
 ## 🛠 Installation & Deployment
 
