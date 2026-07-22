@@ -65,23 +65,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run Bandit
-        run: |
-          pip install bandit
-          bandit -r . -x ./tests -ll -ii
-
-      - name: Run semgrep
-        uses: semgrep/semgrep-action@v1
-        with:
-          config: p/python p/owasp-top-10 p/r2c-security-audit
-  security-devsecops:
-    name: SAST
-    needs: code-quality
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
       - name: Run Bandit (Python Security)
         run: |
           pip install bandit
