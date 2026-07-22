@@ -82,5 +82,11 @@ This software is intended for authorized security auditing and educational purpo
 ## 📝 Information
 
 •   Lead Developer: Rapid
+
 •   Language: Python 3.13
+
 •   License: [MIT](LICENSE)
+
+•   Documentation
+
+•   Site: https://bullsploit.ru
