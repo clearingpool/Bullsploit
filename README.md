@@ -87,6 +87,8 @@ This software is intended for authorized security auditing and educational purpo
 
 •   License: [MIT](LICENSE)
 
-•   Documentation
+•   Documentation EN [Documentation](docs/documentationEN.md)
+
+•   Documentation RU [Documentation](docs/documentationRU.md)
 
 •   Site: https://bullsploit.ru
