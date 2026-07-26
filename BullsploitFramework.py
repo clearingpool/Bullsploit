@@ -66,7 +66,7 @@ def check() -> None:
             if "__pycache__" in dirs:
                 dirs.remove("__pycache__")
             for file in files:
-                if file != "__pycache__":
+                if file != "__pycache__" and file.endswith(".py") or file.endswith(".go"):
                     if f"{os.sep}payloads" in root:
                         counts["payloads"] += 1
                     if f"{os.sep}auxiliary" in root:
@@ -131,6 +131,7 @@ class BSC:
         self.rules = {}
         self.corrkey = []
         self.modules = []
+        self.selectmod = self.getmodule()
         self.analyse()
         self.clearmodule()
         self.run()
@@ -361,6 +362,7 @@ Common options:
                         manager.show()
 
                     case "interact":
+                        print(self.selectmod)
                         if args:
                             mtype, mname = self.selectmod.split("/")
                             result = os.path.join("Modules", mtype, mname + ".py")

@@ -57,7 +57,7 @@ def launch(args: dict) -> None:
                     rawcontent = main(fullpath)
                     if rawcontent != None:
                         print(f"{evnt()} {timenow()} Module {name} was successfully initialized! ")
-                        readycode = rawcontent.replace("{rhost}", ip).replace("{rport}", str(port))
+                        readycode = str(rawcontent.replace("{rhost}", ip).replace("{rport}", str(port)))
                         print(f"{evnt()} {timenow()} Code ready to build")
                         count = 1
                         root = os.path.join(currdir, "..", "..", "output") 
