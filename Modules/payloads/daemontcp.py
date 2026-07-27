@@ -41,7 +41,8 @@ class listener:
         try:
             self.serversocket.bind((self.host, self.port))
             self.serversocket.listen(1)
-            
+        except:
+            pass
 
 
 

