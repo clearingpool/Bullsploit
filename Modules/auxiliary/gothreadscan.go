@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -47,15 +48,31 @@ func worker(ip string, ports <-chan int, wg *sync.WaitGroup, writer *bufio.Write
 }
 
 func main() {
-	if len(os.Args) < 5 {
+	if len(os.Args) < 4 {
 		fmt.Printf("%s Error missing arguments\n", utils.Err())
 		os.Exit(1)
 
 	}
 	ip := os.Args[1]
-	sport, _ := strconv.Atoi(os.Args[2])
-	eport, _ := strconv.Atoi(os.Args[3])
-	threads, _ := strconv.Atoi(os.Args[4])
+	parts := strings.Split(os.Args[2], "-")
+	if len(parts) != 2 {
+		fmt.Printf("%s Error uncorrect ports range...", utils.Err())
+		os.Exit(1)
+	}
+	sport, err := strconv.Atoi(strings.TrimSpace(parts[0]))
+	if err != nil {
+		fmt.Printf("%s %v", utils.Err(), err)
+		os.Exit(1)
+	}
+	eport, err := strconv.Atoi(strings.TrimSpace(parts[1]))
+	if err != nil {
+		fmt.Printf("%s %v", utils.Err(), err)
+		os.Exit(1)
+	}
+	threads, err := strconv.Atoi(os.Args[3])
+	if err != nil {
+		fmt.Printf("%s %v", utils.Err(), err)
+	}
 	fmt.Printf(" %s Scanning start %s%s%s in %d threads...\n", utils.Evnt(), colgrn, ip, colres, threads)
 	startTime := time.Now()
 	ports := make(chan int, threads*2)

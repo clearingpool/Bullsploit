@@ -6,4 +6,5 @@ output/
 my_env
 .vscode
 goscan
-
+Dockerfile
+.dockerignore

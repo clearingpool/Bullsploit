@@ -291,7 +291,14 @@ Common options:
                             mtype, mname = self.selectmod.split("/")
                             path = os.path.join("Modules", mtype, mname + ".py")
                             if not os.path.exists(path):
-                                print(f"{err()} Module file not found {path}")
+                                path = os.path.join("Modules", mtype, mname + ".go")
+                                if not os.path.exists(path): return
+                                command = ["go", "run", path]
+                                for key in self.rules.keys():
+                                    command.append(self.options[key])
+                                
+                                subprocess.run(command)
+                                return
                         try:
                             spec = importlib.util.spec_from_file_location(mname, path)
                             modul = importlib.util.module_from_spec(spec)
@@ -323,11 +330,25 @@ Common options:
                         if not found: 
                             print(f"{err()} Not found module {module}")
                             return
-                        if module:
+                        if os.path.exists("Modules/" + module + ".py"):
                             scheme = self.selectmod
                             finallyscheme = "Modules." + scheme.replace("/", ".")
                             m = importlib.import_module(finallyscheme)
                             self.rules = m.depargs()
+                        else:
+                            gopath = os.path.join("Modules", module + ".go")
+                            try:
+                                with open(gopath, "r", encoding="utf-8") as f:
+                                    content = f.read()
+                                pattern = r'"([^\"]+)"\s*:\s*"([^\"]+)"'
+            
+                                matches = re.findall(pattern, content)
+                                godepargs = {key: value for key, value in matches}
+                                self.rules = godepargs
+
+                            except Exception as e:
+                                print(f"{err()} {e}")
+
 
                         self.corrkey = [key.lower() for key in self.rules]
 
@@ -389,7 +410,8 @@ Common options:
                             for key, value in self.options.items():
                                 print(f"{evnt()} {key.capitalize()} => {value}")
 
-
+                    case "kk":
+                        print(self.options, "\n", self.rules)
                     case "back":
                         self.options = {}
                         self.clearmodule()
