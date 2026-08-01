@@ -23,7 +23,7 @@ from SessionManager import manager
 import socket
 
 #main function
-def main(payload, sid) -> None:
+def main(payload: str, sid: int) -> None:
     try:
         session = manager.getsession(sid)
         conn, addr = session["conn"], session["addr"]
@@ -38,8 +38,7 @@ def main(payload, sid) -> None:
 
 #launch func
 def launch(args: dict) -> None:
-    sid = args.get("session")
-    sid = int(sid)
+    sid = int(args.get("session"))
     payload = """python3 -c 'import platform, os, psutil; v = psutil.virtual_memory(); ram = f"{v.total / (1024**3):.1f}GB"; cpu = next((line.split(":")[1].strip() for line in open("/proc/cpuinfo") if "model name" in line), "Unknown") if os.path.exists("/proc/cpuinfo") else "Unknown"; print(f"os: {platform.system()} {platform.release()}\\ncpu: {cpu}\\nram: {ram}")'"""
 
     main(payload, sid)

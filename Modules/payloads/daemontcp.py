@@ -29,13 +29,13 @@ lock = threading.Lock()
 
 #main function
 class listener:
-    def __init__(self, host: str, port: int):
+    def __init__(self, host: str, port: int) -> None:
         self.host = host
         self.port = port
         self.clientsocket = None
         self.clientaddr = None
 
-    def start(self):
+    def start(self) -> None:
         self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
