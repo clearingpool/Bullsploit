@@ -219,13 +219,13 @@ class BSC:
     def table(self, modultype=None) -> None:
         try:
             if modultype is None:
-                filtered = self.modules
+                filtered = [m for m in self.modules if m["name"] != "listener"]
             else:
                 mtype = modultype.lower()
                 if mtype == "payload": mtype = "payloads"
                 if mtype == "aux": mtype = "auxiliary"
                 if mtype == "builders": mtype = "builder"
-                filtered = [m for m in self.modules if m["type"].lower() == mtype.lower()]
+                filtered = [m for m in self.modules if m["type"].lower() == mtype.lower() and m["name"] != "listener"]
             if not filtered:
                 print(f"{err()} Not found modules for type: {mtype}")
                 return
@@ -275,6 +275,9 @@ Common options:
     use <module path>              --Use some module
     set <arguments>                --Add settings
     run                            --Start module
+    interact                       --Enter reverse shell management mode
+    sessions                       --Check available sessions
+    back                           --Clear selected module
     exit                           --Exit bullsploit
 
                     """)

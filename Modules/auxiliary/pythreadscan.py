@@ -1,7 +1,7 @@
 
 #basic module description
 def description() -> str:
-    return "Standard auxiliary (Multithread scaner)"
+    return "Python multithread scanner"
 
 #basic module rank
 def rank() -> str:
