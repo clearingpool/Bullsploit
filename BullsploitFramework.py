@@ -297,7 +297,7 @@ Common options:
                                 for key in self.rules.keys():
                                     command.append(self.options[key])
                                 
-                                subprocess.run(command)
+                                subprocess.run(command, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr)
                                 return
                         try:
                             spec = importlib.util.spec_from_file_location(mname, path)

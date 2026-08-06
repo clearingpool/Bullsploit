@@ -43,6 +43,7 @@ class sessions:
                 except:
                     pass
             del self.sessions[sid]
+            self.currentId -= 1
 
 manager = sessions()
 

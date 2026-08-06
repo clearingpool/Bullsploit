@@ -5,7 +5,7 @@ def description() -> str:
 
 #basic module rank
 def rank() -> str:
-    return "Good"
+    return "Normal"
 
 #basic module date
 def date() -> str:
