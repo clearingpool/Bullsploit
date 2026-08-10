@@ -52,8 +52,6 @@ def interact(sid: int) -> None:
             manager.remove(sid)  
             break
 
-#main function
-
 
 #launch func
 def launch(args: dict) -> None:

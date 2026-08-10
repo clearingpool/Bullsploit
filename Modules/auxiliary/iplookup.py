@@ -38,7 +38,7 @@ def main(ip: str = "8.8.8.8") -> None:
             print(f" Currency:    {Fore.CYAN}{data.get('currency')}{Style.RESET_ALL}")
             print(f" ISP:         {Fore.CYAN}{data.get('isp')} ({Style.RESET_ALL}{data.get('org')}{Fore.CYAN}){Style.RESET_ALL}")
             print(f" ASN:         {Fore.CYAN}{data.get('as')} {Style.RESET_ALL}({data.get('asname')})")
-            print(f" Reverse DNS: {Fore.CYAN}{beautip(data.get('reverse'))}{Style.RESET_ALL}")
+            print(f" Reverse DNS: {Fore.CYAN}{beautip(data.get('reverse')) if data.get('reverse') else f"{Fore.YELLOW}None"}{Style.RESET_ALL}")
             print(f" Mobile inet: {Fore.CYAN}{f'{Fore.GREEN}Yes' if data.get('mobile') else f"{Fore.RED}No"}{Style.RESET_ALL}")
             print(f" Proxy/VPN:   {Fore.CYAN}{f'{Fore.GREEN}Yes' if data.get('proxy') else f"{Fore.RED}No"}{Style.RESET_ALL}")
             print(f" Hosing:      {Fore.CYAN}{f'{Fore.GREEN}Yes' if data.get('hosting') else f"{Fore.RED}No"}{Style.RESET_ALL}")
