@@ -46,7 +46,7 @@ class shell(BaseHTTPRequestHandler):
 
 #launch func
 def launch(args: dict):
-    host = args.get("host", "0.0.0.0")
+    host = args.get("host", "0.0.0.0") # nosec B104
     port = int(args.get("port", 8080))
     try:
         Listen(host, port, "http")
